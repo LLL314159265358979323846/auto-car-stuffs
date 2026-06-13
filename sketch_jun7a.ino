@@ -108,21 +108,25 @@ void loop()
     digitalWrite(redl, 0);
     digitalWrite(greenl, 0);
     actflag = 1;
-    if(digitalRead(input4)){
-      right();
-      RemoteXYEngine.delay(80);
+    if(!(digitalRead(input4) ^ digitalRead(input2))){
+      forth();
     }
     else if(digitalRead(input2)){
       left();
       RemoteXYEngine.delay(80); 
     }
     else{
-      forth();
+      right();
+      RemoteXYEngine.delay(80);
     }
   }
   else if(actflag){ //stopping
     digitalWrite(greenl, 1);
     stop();
   }
-  else if(RemoteXY.connect_flag) digitalWrite(redl, 1); //ready
+  else if(RemoteXY.connect_flag){
+    digitalWrite(redl, 1); //ready
+    stop();
+  }
+  else stop;
 }
