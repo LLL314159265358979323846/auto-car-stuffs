@@ -104,7 +104,7 @@ void loop()
     if(!(digitalRead(input4) ^ digitalRead(input2))){
       forth();
     }
-    else if(digitalRead(input2) || digitalRead(input1){
+    else if(digitalRead(input2) || digitalRead(input1)){
       left();
       RemoteXYEngine.delay(80); 
     }
