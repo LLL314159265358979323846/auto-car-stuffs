@@ -15,27 +15,24 @@ struct {
 } RemoteXY;   
 #pragma pack(pop)
 
-byte redl = 19; //the lights
-byte greenl = 21;
-byte bluel = 22;
+//byte redl = ; the lights, unused
+//byte greenl = ;
+//byte bluel = ;
+//bool actflag = 0;
 
-byte input1 = 34; //leftmost
-byte input2 = 35;
-//byte input3 = 32; unused
-byte input4 = 33;
-byte input5 = 25; //rightmost
+byte input1 = 18; //leftmost
+byte input2 = 19;
+//byte input3 = ; unused
+byte input4 = 22;
+byte input5 = 23; //rightmost
 
-byte b = 27; //back wheels
-
-
-byte fl1 = 4; //IN1
-byte fl2 = 16; //IN2
-byte fr1 = 17; //IN3
-byte fr2 = 18; //IN4
+byte b = 21; //back wheels
+byte fl1 = 26; //IN1
+byte fl2 = 25; //IN2
+byte fr1 = 33; //IN3
+byte fr2 = 32; //IN4
 byte spd = 130;
 byte spd2 = 65;
-
-bool actflag = 0;
 
 void forth(){ //前進
   analogWrite(fl1, spd);
@@ -45,13 +42,13 @@ void forth(){ //前進
   analogWrite(b, spd);
 }
 
-void back(){ //後退
+/*void back(){ //後退
   digitalWrite(fl1, 0);
   analogWrite(fl2, spd);
   digitalWrite(fr1, 0);
   analogWrite(fr2, spd);
   digitalWrite(b, 0);
-}
+}*/
 
 void left(){ //左轉
   digitalWrite(fl1, 0);
@@ -94,9 +91,9 @@ void setup()
   pinMode(input4,INPUT);
   pinMode(input5,INPUT);
 
-  pinMode(redl, OUTPUT);
-  pinMode(greenl, OUTPUT);
-  pinMode(bluel, OUTPUT);
+  //pinMode(redl, OUTPUT);
+  //pinMode(greenl, OUTPUT);
+  //pinMode(bluel, OUTPUT);
   Serial.begin(9600);
 }
 
@@ -104,14 +101,10 @@ void loop()
 { 
   RemoteXYEngine.handler ();
   if(RemoteXY.switch_01){ //auto
-    digitalWrite(bluel, 1);
-    digitalWrite(redl, 0);
-    digitalWrite(greenl, 0);
-    actflag = 1;
     if(!(digitalRead(input4) ^ digitalRead(input2))){
       forth();
     }
-    else if(digitalRead(input2)){
+    else if(digitalRead(input2) || digitalRead(input1){
       left();
       RemoteXYEngine.delay(80); 
     }
@@ -120,13 +113,5 @@ void loop()
       RemoteXYEngine.delay(80);
     }
   }
-  else if(actflag){ //stopping
-    digitalWrite(greenl, 1);
-    stop();
-  }
-  else if(RemoteXY.connect_flag){
-    digitalWrite(redl, 1); //ready
-    stop();
-  }
-  else stop;
+  else stop(); //stopping
 }
