@@ -101,17 +101,15 @@ void loop()
 { 
   RemoteXYEngine.handler ();
   if(RemoteXY.switch_01){ //auto
-    if(!(digitalRead(input4) ^ digitalRead(input2))){
-      forth();
-    }
-    else if(digitalRead(input2) || digitalRead(input1)){
+    if(digitalRead(input2) || digitalRead(input1)){
       left();
       RemoteXYEngine.delay(80); 
     }
-    else{
+    else if(digitalRead(input4) || digitalRead(input5)){
       right();
       RemoteXYEngine.delay(80);
     }
+    else forth();
   }
   else stop(); //stopping
 }
