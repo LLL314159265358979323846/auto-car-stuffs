@@ -34,6 +34,8 @@ byte fr2 = 32; //IN4
 byte spd = 130;
 byte spd2 = 65;
 
+signed char state; //determine change of direction
+
 void forth(){ //前進
   analogWrite(fl1, spd);
   digitalWrite(fl2, 0);
@@ -41,14 +43,6 @@ void forth(){ //前進
   digitalWrite(fr2, 0);
   analogWrite(b, spd);
 }
-
-/*void back(){ //後退
-  digitalWrite(fl1, 0);
-  analogWrite(fl2, spd);
-  digitalWrite(fr1, 0);
-  analogWrite(fr2, spd);
-  digitalWrite(b, 0);
-}*/
 
 void left(){ //左轉
   digitalWrite(fl1, 0);
@@ -101,11 +95,12 @@ void loop()
 { 
   RemoteXYEngine.handler ();
   if(RemoteXY.switch_01){ //auto
-    if(digitalRead(input2) || digitalRead(input1)){
+    state = digitalRead(input1) + digitalRead(input2) - digitalRead(input4) - digitalRead(input5);
+    if(state > 0){
       left();
       RemoteXYEngine.delay(80); 
     }
-    else if(digitalRead(input4) || digitalRead(input5)){
+    else if(state < 0){
       right();
       RemoteXYEngine.delay(80);
     }
